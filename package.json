@@ -1,0 +1,47 @@
+{
+  "name": "mw-replace-bot",
+  "version": "0.1.0",
+  "description": "Replacement-focused mediawiki bot",
+  "main": "index.js",
+  "scripts": {
+    "eslint": "eslint .",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/brettz9/mw-replace-bot.git"
+  },
+  "keywords": [
+    "mediawiki",
+    "bot",
+    "replace"
+  ],
+  "author": "Brett Zamir",
+  "contributors": [],
+  "engines": {},
+  "license": "MIT",
+  "browserslist": ["maintained node versions"],
+  "bugs": {
+    "url": "https://github.com/brettz9/mw-replace-bot/issues"
+  },
+  "homepage": "https://github.com/brettz9/mw-replace-bot#readme",
+  "dependencies": {
+    "mediawiki": "0.0.14"
+  },
+  "devDependencies": {
+    "@mysticatea/eslint-plugin": "^9.0.1",
+    "eslint": "^5.16.0",
+    "eslint-config-ash-nazg": "^2.0.0",
+    "eslint-config-standard": "^12.0.0",
+    "eslint-plugin-compat": "^3.1.1",
+    "eslint-plugin-eslint-comments": "^3.1.1",
+    "eslint-plugin-import": "^2.17.2",
+    "eslint-plugin-jsdoc": "^4.8.3",
+    "eslint-plugin-markdown": "^1.0.0",
+    "eslint-plugin-no-use-extend-native": "^0.4.0",
+    "eslint-plugin-node": "^8.0.1",
+    "eslint-plugin-promise": "^4.1.1",
+    "eslint-plugin-standard": "^4.0.0",
+    "eslint-plugin-unicorn": "^8.0.2"
+  }
+}
