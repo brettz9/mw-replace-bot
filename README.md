@@ -36,11 +36,11 @@ module.exports = {
 ## To-dos
 
 1. Need `continue` code!
-1. Should tie into API to actually do regex search rather than search
-    and then find/replace
 1. Expose a CLI to pass in a config file, looking in working directory
 
 ## Lower-priority to-dos
 
 1. Ideally, update `mediawiki` to use ES6 `Promise` API and use here
 1. Browser support (including ESM)
+1. Would ideally tie into SQL to actually do regex search rather than search
+    and then find/replace
