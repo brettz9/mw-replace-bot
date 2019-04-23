@@ -36,7 +36,9 @@ module.exports = {
 ## To-dos
 
 1. Need `continue` code!
-1. Expose a CLI to pass in a config file, looking in working directory
+1. Debug mode
+1. Expose Bot config for alteration
+1. GUI and/or expose a CLI to pass in a config file, looking in working directory
 
 ## Lower-priority to-dos
 
