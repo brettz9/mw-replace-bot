@@ -23,6 +23,7 @@ module.exports = {
   user: 'user@<my-bot-login>',
   password: 'my-bot-password',
   search: 'search terms',
+  summary: 'Optional edit summary',
   find: /a (regular) expression/gu,
   replace (n0, n1) {
     return n1; // Do replacements here

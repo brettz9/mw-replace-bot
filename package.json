@@ -20,13 +20,15 @@
   "contributors": [],
   "engines": {},
   "license": "MIT",
-  "browserslist": ["maintained node versions"],
+  "browserslist": [
+    "maintained node versions"
+  ],
   "bugs": {
     "url": "https://github.com/brettz9/mw-replace-bot/issues"
   },
   "homepage": "https://github.com/brettz9/mw-replace-bot#readme",
   "dependencies": {
-    "mediawiki": "0.0.14"
+    "mediawiki": "https://github.com/brettz9/mediawiki#login"
   },
   "devDependencies": {
     "@mysticatea/eslint-plugin": "^9.0.1",

@@ -13,9 +13,8 @@ const bot = new MediaWikiBot(botConfig);
 
 const hasUserAndPass = config.user && config.password;
 if (hasUserAndPass) {
-  // bot.login(config.user, config.password)
   bot.login(config.user, config.password, true).complete((res) => {
-    console.log('login res', res);
+    console.log('Logged in', res);
 
     // Execute before all other queued requests? (Default: false)
     const isPriority = true;
@@ -83,39 +82,17 @@ if (hasUserAndPass) {
         title, pageid, revisions, timestamp: basetimestamp
       }) => {
         // Not sure order is correct, but appears to get one only
-        console.log('title', title);
+        console.log('Page title:', title);
         const lastRevision = revisions[revisions.length - 1]['*'];
 
-        // GET TOKEN
-        bot.get({
-          action: 'query',
-          meta: 'tokens'
-        }, true).complete(({query: {tokens: {csrftoken: token}}}) => {
-          // DO REPLACEMENTS
-          console.log('token', token);
-          const text = lastRevision.replace(config.find, config.replace);
-          console.log('text', text);
+        const text = lastRevision.replace(config.find, config.replace);
+        const summary = config.summary || '';
+        console.log('Summary:', summary);
+        console.log('Replaced text:\n\n', text);
 
-          // SUBMIT EDIT
-          // https://www.mediawiki.org/wiki/API:Edit
-          // Todo: Once proper token received, test
-          /*
-          bot.post({
-            action: 'edit',
-            pageid,
-            summary: (config.summary || '') + botConfig.byeline,
-            text,
-            bot: true,
-            basetimestamp,
-            // recreate: false, // If deleted
-            nocreate: true, // Throw if non-existent
-            // undo: Can be used in place of text for revisions
-            // redirect: true, // Resolve redirects
-            contentformat: 'application/json',
-            contentmodel: 'wikitext',
-            token
-          }, true);
-          */
+        // GET TOKEN AND DO REPLACEMENTS
+        bot.edit(title, text, summary, true).complete(() => {
+          console.log('Finished!');
         }).error((err) => {
           console.log(err.toString());
         });
@@ -127,6 +104,6 @@ if (hasUserAndPass) {
       console.log(err.toString());
     });
   }).error((err) => {
-    console.log('aaaa', err);
+    console.log(err.toString());
   });
 }
