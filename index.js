@@ -97,7 +97,7 @@ if (hasUserAndPass) {
 
           // SUBMIT EDIT
           // https://www.mediawiki.org/wiki/API:Edit
-          // Todo: reenable login and test this
+          // Todo: Once proper token received, test
           /*
           bot.post({
             action: 'edit',
