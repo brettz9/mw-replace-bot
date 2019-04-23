@@ -90,7 +90,7 @@ if (hasUserAndPass) {
         bot.get({
           action: 'query',
           meta: 'tokens'
-        }).complete(({query: {tokens: {csrftoken: token}}}) => {
+        }, true).complete(({query: {tokens: {csrftoken: token}}}) => {
           // DO REPLACEMENTS
           console.log('token', token);
           const text = lastRevision.replace(config.find, config.replace);
@@ -114,19 +114,18 @@ if (hasUserAndPass) {
             contentformat: 'application/json',
             contentmodel: 'wikitext',
             token
-          });
+          }, true);
           */
         }).error((err) => {
           console.log(err.toString());
         });
       });
+      if (hasUserAndPass) {
+        bot.logout();
+      }
     }).error((err) => {
       console.log(err.toString());
     });
-
-    if (hasUserAndPass) {
-      bot.logout();
-    }
   }).error((err) => {
     console.log('aaaa', err);
   });
