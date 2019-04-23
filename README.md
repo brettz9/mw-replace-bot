@@ -33,3 +33,8 @@ module.exports = {
 ## To-dos
 
 1. Expose a CLI to pass in a config file, looking in working directory
+
+## Lower-priority to-dos
+
+1. Ideally, update `mediawiki` to use ES6 `Promise` API and use here
+1. Browser support (including ESM)
