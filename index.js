@@ -116,6 +116,8 @@ if (hasUserAndPass) {
             token
           });
           */
+        }).error((err) => {
+          console.log(err.toString());
         });
       });
     }).error((err) => {
