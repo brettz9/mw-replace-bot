@@ -86,6 +86,10 @@ if (hasUserAndPass) {
         const lastRevision = revisions[revisions.length - 1]['*'];
 
         const text = lastRevision.replace(config.find, config.replace);
+        if (text === lastRevision) {
+          console.log('No differences for', title);
+          return;
+        }
         const summary = config.summary || '';
         console.log('Summary:', summary);
         console.log('Replaced text:\n\n', text);
