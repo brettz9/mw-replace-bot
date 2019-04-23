@@ -4,7 +4,9 @@ A Node.js tool using [mediawiki](https://github.com/oliver-moran/mediawiki)
 to conveniently perform expressive find-and-replaces on wiki content
 (including regular expressions with callbacks).
 
-**THIS PROJECT IS NOT YET FUNCTIONAL.**
+**NOTE: This project is very much experimental, and short of the
+potential it adds for your own replacements to be problematic, it may
+have its own bugs at this stage. Use at your own risk!**
 
 ## Installation
 
