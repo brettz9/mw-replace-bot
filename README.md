@@ -9,7 +9,7 @@ to conveniently perform expressive find-and-replaces on wiki content
 ## Installation
 
 ```
-npm i mw-replace-bot --save
+npm i mw-replace-bot
 ```
 
 ## Usage
