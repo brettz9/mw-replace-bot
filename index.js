@@ -66,6 +66,7 @@ if (hasUserAndPass) {
       gsrsearch: config.search || '' // Search titles or content (Required)
     }, isPriority).complete((resp) => {
       const {
+        // Todo: Recurse through all results
         /*
         batchcomplete,
         continue: {
