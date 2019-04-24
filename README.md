@@ -17,7 +17,8 @@ npm i mw-replace-bot
 ## Usage
 
 In a `config.js` file in the same directory as `mw-replace-bot`,
-add the following:
+add the following and modify according to your site and
+replacement needs:
 
 ```js
 module.exports = {
