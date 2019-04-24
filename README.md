@@ -33,9 +33,16 @@ module.exports = {
   //   API and over the network; the `find` is
   //   post-processing done within Node
   search: 'search terms',
+
+  // This can also be just a string in which case,
+  //   regular expressions wouldn't apply and only
+  //   a single instance would be replaced
+  // For regular expressions in JavaScript, see https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/RegExp
   find: /a (regular) expression/gu,
+
   // Instead of a function, this can also be a
-  //   regex replacement string
+  //   regex replacement string: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/replace#Specifying_a_string_as_a_parameter
+  // For function docs, see https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/replace#Specifying_a_function_as_a_parameter
   replace (n0, n1) {
     return n1; // Do replacements here
   },
