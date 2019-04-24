@@ -21,23 +21,52 @@ add the following:
 
 ```js
 module.exports = {
-  endpoint: 'https://site-to-query.example/api.php',
+  // REQUIRED ITEMS
+
+  endpoint: 'https://site-to-be-queried.example/api.php',
   user: 'user@<my-bot-login>',
   password: 'my-bot-password',
+  // The search can be more broad than the regex find,
+  //   as entries found with `search` that are not found
+  //   by `find` will not be modified; but currently a
+  //   `search` is needed to get results out of the
+  //   API and over the network; the `find` is
+  //   post-processing done within Node
   search: 'search terms',
-  summary: 'Optional edit summary',
   find: /a (regular) expression/gu,
+  // Instead of a function, this can also be a
+  //   regex replacement string
   replace (n0, n1) {
     return n1; // Do replacements here
-  }
+  },
+
+  // OPTIONAL ITEMS
+
+  // Disable actual editing
+  debug: true,
+  // Don't show the replaced text of the page in console (can be large)
+  hideText: true,
+  // Suffix to add to edit summaries:
+  byline: '(mw-replace bot edit)',
+  // Summary for the batch
+  summary: 'A summary for this batch of edits',
+  // ms between API requests (Default: 6 secs)
+  rate: 6e3,
+
+  // Used in `User-Agent` header; `version` is that of `mediawiki` module
+  // 1. Default for Node:
+  // 'MediaWiki/' + version + '; Node/' + process.version +
+  //    '; <https://github.com/oliver-moran/mediawiki>',
+  // 2. Default for browser (once we may support):
+  // 'MediaWiki/' + version + '; ' + navigator.userAgent +
+  //    '; <https://github.com/oliver-moran/mediawiki>'
+  userAgent: 'A string to use for the `User-Agent` header'
 };
 ```
 
 ## To-dos
 
 1. Need `continue` code!
-1. Debug mode
-1. Expose Bot config for alteration
 1. GUI and/or expose a CLI to pass in a config file, looking in working directory
 
 ## Lower-priority to-dos

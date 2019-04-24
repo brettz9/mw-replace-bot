@@ -4,9 +4,11 @@ const config = require('./config');
 
 const botConfig = {
   endpoint: config.endpoint,
-  rate: 6e3, // ms between API requests (Default: 6 secs)
-  // userAgent: 'mw-replace-bot <https://github.com/brettz9/mw-replace-bot>',
-  byeline: '(mw-replace bot edit)'
+  rate: config.rate || 6e3, // ms between API requests (Default: 6 secs)
+  userAgent: config.userAgent, // Change default from `mediawiki` to 'mw-replace-bot <https://github.com/brettz9/mw-replace-bot>'?
+  byeline: 'byline' || 'byeline' in config // Allow empty string
+    ? (config.byline || config.byeline)
+    : '(mw-replace bot edit)'
 };
 
 const bot = new MediaWikiBot(botConfig);
@@ -92,17 +94,27 @@ if (hasUserAndPass) {
         }
         const summary = config.summary || '';
         console.log('Summary:', summary);
-        console.log('Replaced text:\n\n', text);
+
+        if (!config.hideText) {
+          console.log('Replaced text:\n\n', text);
+        }
+
+        if (config.debug) {
+          return;
+        }
 
         // GET TOKEN AND DO REPLACEMENTS
         bot.edit(title, text, summary, true).complete(() => {
-          console.log('Finished!');
+          console.log('Finished', title);
         }).error((err) => {
           console.log(err.toString());
         });
       });
       if (hasUserAndPass) {
+        console.log('Finished; logging out...');
         bot.logout();
+      } else {
+        console.log('Finished!');
       }
     }).error((err) => {
       console.log(err.toString());
