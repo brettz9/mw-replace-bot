@@ -1,0 +1,49 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://brett-zamir.me/schemas/mw-replace-bot/fieldSchema.json",
+  "type": "object",
+  "required": ["endpoint", "user", "pass", "search", "find", "replace"],
+  "properties": {
+    "endpoint": {
+      "type": "string",
+      "format": "uri"
+    },
+    "user": {
+      "type": "string"
+    },
+    "pass": {
+      "type": "string",
+      "format": "password"
+    },
+    "search:": {
+      "type": "string"
+    },
+    "find": {
+      "type": "string",
+      "format": "regex"
+    },
+    "replace": {
+      "type": "string",
+      "format": "function"
+    },
+    "byline": {
+      "type": "string"
+    },
+    "summary": {
+      "type": "string"
+    },
+    "debug": {
+      "type": "boolean"
+    },
+    "hideText": {
+      "type": "boolean"
+    },
+    "rate": {
+      "type": "number",
+      "minimum": 0
+    },
+    "userAgent": {
+      "type": "string"
+    }
+  }
+}
