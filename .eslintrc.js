@@ -4,6 +4,7 @@ module.exports = {
     },
     "settings": {
         "polyfills": [
+          "fetch"
         ]
     },
     "extends": ["ash-nazg/sauron"],

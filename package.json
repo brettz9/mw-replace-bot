@@ -28,6 +28,8 @@
   },
   "homepage": "https://github.com/brettz9/mw-replace-bot#readme",
   "dependencies": {
+    "core-js-bundle": "^3.1.3",
+    "jamilih": "^0.45.0",
     "mediawiki": "https://github.com/brettz9/mediawiki#login"
   },
   "devDependencies": {
