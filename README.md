@@ -79,6 +79,6 @@ module.exports = {
 ## Lower-priority to-dos
 
 1. Ideally, update `mediawiki` to use ES6 `Promise` API and use here
-1. Browser support (including ESM)
+1. Client-side browser support (including ESM)
 1. Would ideally tie into SQL to actually do regex search rather than search
     and then find/replace
