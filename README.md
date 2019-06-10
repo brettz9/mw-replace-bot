@@ -86,7 +86,7 @@ module.exports = {
 
 ## To-dos
 
-1. GUI
+1. GUI, and later as a Mediawiki extension
 1. Expose a genuine `bin` script
 
 ## Lower-priority to-dos
