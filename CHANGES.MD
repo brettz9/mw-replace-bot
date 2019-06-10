@@ -1,5 +1,9 @@
 # mw-replace-bot CHANGES
 
+## 0.3.1
+
+- Fix: Had not been requiring newly renamed config file properly
+
 ## 0.3.0
 
 - Rename config file to `mw-replace-rc.js`
