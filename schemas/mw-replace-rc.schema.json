@@ -32,10 +32,16 @@
     "summary": {
       "type": "string"
     },
-    "debug": {
+    "readonly": {
       "type": "boolean"
     },
-    "hideText": {
+    "logging": {
+      "type": "boolean"
+    },
+    "logReplacedText": {
+      "type": "boolean"
+    },
+    "autoContinue": {
       "type": "boolean"
     },
     "rate": {

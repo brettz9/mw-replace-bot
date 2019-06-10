@@ -49,11 +49,14 @@ module.exports = {
   },
 
   // OPTIONAL ITEMS
+  autoContinue: true,
 
   // Disable actual editing
-  debug: true,
-  // Don't show the replaced text of the page in console (can be large)
-  hideText: true,
+  readonly: true,
+  // Logging in general
+  logging: true,
+  // Opt in to show the replaced text of the page in console (can be large)
+  logReplacedText: true,
   // Suffix to add to edit summaries:
   byline: '(mw-replace bot edit)',
   // Summary for the batch
@@ -83,7 +86,6 @@ module.exports = {
 
 ## To-dos
 
-1. Need `continue` code!
 1. GUI
 1. Expose a genuine `bin` script
 

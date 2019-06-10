@@ -14,8 +14,10 @@ const MediaWikiBot = require('mediawiki').Bot;
 * @property {string} replace Function as string
 * @property {string} [byline]
 * @property {string} [summary]
-* @property {boolean} [debug]
-* @property {boolean} [hideText]
+* @property {boolean} [readonly]
+* @property {boolean} [logging]
+* @property {boolean} [logReplacedText]
+* @property {boolean} [autoContinue]
 * @property {PositiveFiniteNumber} [rate]
 * @property {string} [userAgent]
 * @property {Integer} [gsrlimit] Greater than or equal to 1
@@ -54,10 +56,11 @@ function findReplace (config) {
     throw new TypeError('Unrecognized config type');
   }
 
+  const {logging, endpoint, userAgent} = config;
   const botConfig = {
-    endpoint: config.endpoint,
+    endpoint,
     rate: config.rate || 6e3, // ms between API requests (Default: 6 secs)
-    userAgent: config.userAgent, // Change default from `mediawiki` to 'mw-replace-bot <https://github.com/brettz9/mw-replace-bot>'?
+    userAgent, // Change default from `mediawiki` to 'mw-replace-bot <https://github.com/brettz9/mw-replace-bot>'?
     byeline: 'byline' || 'byeline' in config // Allow empty string
       ? (config.byline || config.byeline)
       : '(mw-replace bot edit)'
@@ -69,14 +72,23 @@ function findReplace (config) {
   if (!hasUserAndPass) {
     throw new TypeError('User and password expected');
   }
-  // Really ought to get `mediawiki` bot returning standard promises
 
-  // eslint-disable-next-line promise/avoid-new
-  return new Promise((resolve, reject) => {
-    const results = [];
-    bot.login(config.user, config.password, true).complete((res) => {
-      console.log('Logged in', res);
+  /**
+   * From Mediawiki API results
+   * @typedef {PlainObject} MWContinue
+   * @property {PositiveInteger} gsroffset
+   * @property {string} continue
+  */
 
+  const results = [];
+  /**
+   * @param {MWContinue} cont
+   * @returns {Promise<MWReplaceResult[]>}
+   */
+  function searchAndEdit (cont) {
+    // Really ought to get `mediawiki` bot returning standard promises
+    // eslint-disable-next-line promise/avoid-new
+    return new Promise((resolve, reject) => {
       // Execute before all other queued requests? (Default: false)
       const isPriority = true;
       bot.get({
@@ -123,61 +135,98 @@ function findReplace (config) {
         //   incoming_links_desc|last_edit_asc|last_edit_desc|
         //   create_timestamp_asc|create_timestamp_desc
         gsrsort: config.gsrsort || 'none',
-        gsrsearch: config.search || '' // Search titles or content (Required)
+        gsrsearch: config.search || '', // Search titles or content (Required)
+        ...cont
       }, isPriority).complete((resp) => {
         const {
-          batchcomplete,
-          continue: cont,
+          // Todo: `batchcomplete` needed?
+          // batchcomplete,
+          continue: continuation,
           query: {
             pages
           }
         } = resp;
         // console.log(JSON.stringify(resp, null, 2));
+        let prom = Promise.resolve();
         Object.values(pages).forEach(({
           title, pageid, revisions, timestamp: basetimestamp
         }) => {
           // Not sure order is correct, but appears to get one only
-          console.log('Page title:', title);
+          if (logging) console.log('Page title:', title);
           const lastRevision = revisions[revisions.length - 1]['*'];
 
           const text = lastRevision.replace(config.find, config.replace);
           if (text === lastRevision) {
-            console.log('No differences for', title);
+            if (logging) console.log('No differences for', title);
             results.push({title, text, noDifference: true});
             return;
           }
           const summary = config.summary || '';
-          console.log('Summary:', summary);
+          if (logging) console.log('Summary:', summary);
 
-          if (!config.hideText) {
-            console.log('Replaced text:\n\n', text);
+          if (config.logReplacedText) {
+            if (logging) console.log('Replaced text:\n\n', text);
           }
 
-          // Todo: Recurse through all results
-          console.log('batchcomplete, cont', batchcomplete, '::', cont);
           results.push({title, text});
 
-          if (config.debug) {
+          if (config.readonly) {
             return;
           }
 
           // GET TOKEN AND DO REPLACEMENTS
-          bot.edit(title, text, summary, true).complete(() => {
-            console.log('Finished', title);
-          }).error((err) => {
-            reject(err);
+          // Todo: Should we avoid making Promise dependent (or at least not
+          ///  sequential) on the actual replacing resolving or just the query?
+          // eslint-disable-next-line promise/prefer-await-to-then
+          prom = prom.then(() => {
+            // Really ought to get `mediawiki` bot returning standard promises
+            // eslint-disable-next-line promise/avoid-new, promise/param-names
+            return new Promise((res, rej) => {
+              bot.edit(title, text, summary, true).complete(() => {
+                if (logging) console.log('Finished edit for title', title);
+                res();
+              }).error((err) => {
+                rej(err);
+              });
+            });
           });
         });
-        if (hasUserAndPass) {
-          console.log('Finished; logging out...');
-          bot.logout();
-        } else {
-          console.log('Finished!');
-        }
-        return results;
+
+        // eslint-disable-next-line max-len
+        // eslint-disable-next-line promise/prefer-await-to-then, promise/catch-or-return
+        prom.then(() => {
+          if (logging) console.log('Finishing a batch...');
+          // eslint-disable-next-line promise/always-return
+          if (config.autoContinue && continuation) {
+            if (logging) console.log('continuation', continuation);
+            resolve(searchAndEdit(continuation));
+            return;
+          }
+          resolve(continuation);
+        });
       }).error((err) => {
         reject(err);
       });
+    });
+  }
+
+  // Really ought to get `mediawiki` bot returning standard promises
+  // eslint-disable-next-line promise/avoid-new
+  return new Promise((resolve, reject) => {
+    bot.login(config.user, config.password, true).complete((res) => {
+      if (logging) console.log('Logged in', res);
+
+      // eslint-disable-next-line promise/prefer-await-to-then
+      searchAndEdit().then((continuation) => {
+        if (hasUserAndPass) {
+          if (logging) console.log('Finished; logging out...');
+          bot.logout();
+        } else if (logging) console.log('Finished!');
+
+        // console.log('results', results);
+        resolve({results, continuation});
+        return undefined;
+      }).catch(reject);
     }).error((err) => {
       reject(err);
     });
