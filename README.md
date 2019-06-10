@@ -68,18 +68,29 @@ module.exports = {
   // 2. Default for browser (once we may support):
   // 'MediaWiki/' + version + '; ' + navigator.userAgent +
   //    '; <https://github.com/oliver-moran/mediawiki>'
-  userAgent: 'A string to use for the `User-Agent` header'
+  userAgent: 'A string to use for the `User-Agent` header',
+
+  // Continuing
+  // Integer
+  gsrlimit: 10,
+  // One of:
+  // "relevance", "just_match", "none", "incoming_links_asc",
+  // "incoming_links_desc", "last_edit_asc", "last_edit_desc",
+  // "create_timestamp_asc", "create_timestamp_desc"
+  gsrsort: 'relevance'
 };
 ```
 
 ## To-dos
 
 1. Need `continue` code!
-1. GUI and/or expose a CLI to pass in a config file, looking in working directory
+1. GUI
+1. Expose a genuine `bin` script
 
 ## Lower-priority to-dos
 
-1. Ideally, update `mediawiki` to use ES6 `Promise` API and use here
+1. Ideally, update `mediawiki` to use ES6 `Promise` API and use here (with
+    `await`/`async`)
 1. Client-side browser support (including ESM)
 1. Would ideally tie into SQL to actually do regex search rather than search
     and then find/replace

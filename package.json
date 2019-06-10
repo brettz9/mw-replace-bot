@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "eslint": "eslint .",
+    "run": "node -e 'require(\"./\").findReplace();'",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -18,7 +19,9 @@
   ],
   "author": "Brett Zamir",
   "contributors": [],
-  "engines": {},
+  "engines": {
+    "node": ">= 8.0.0"
+  },
   "license": "MIT",
   "browserslist": [
     "maintained node versions"
@@ -34,7 +37,7 @@
   },
   "devDependencies": {
     "@mysticatea/eslint-plugin": "^10.0.3",
-    "@typescript-eslint/parser": "^1.9.0",
+    "@typescript-eslint/parser": "^1.10.2",
     "eslint": "^5.16.0",
     "eslint-config-ash-nazg": "^6.1.1",
     "eslint-config-standard": "^12.0.0",
