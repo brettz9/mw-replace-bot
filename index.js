@@ -1,6 +1,18 @@
 /* eslint-disable promise/prefer-await-to-callbacks, no-console */
 const MediaWikiBot = require('mediawiki').Bot;
-const config = require('./config');
+
+let config;
+/* eslint-disable global-require */
+try {
+  config = require('./mw-replace-rc.js');
+} catch (jsErr) {
+  try {
+    config = require('./mw-replace-rc.json');
+  } catch (jsonErr) {
+    throw new Error('Config files not found');
+  }
+}
+/* eslint-enable global-require */
 
 const botConfig = {
   endpoint: config.endpoint,
@@ -40,7 +52,7 @@ if (hasUserAndPass) {
       // Adding `g` below for (search) generator use
       // gsrnamespace: [].join('|') // Numbers or "*" (Default: 0)
       // Pages to return (Default: 10; max: 5000 for bots, 500 for humans)
-      // gsrlimit: 10,
+      gsrlimit: config.gsrlimit || 10,
       // For continuing results (Default: 0)
       // gsroffset: 0,
       // Ranking enums: classic|classic_noboostlinks|empty|wsum_inclinks|
@@ -63,18 +75,16 @@ if (hasUserAndPass) {
       // Sorting: relevance (Default)|just_match|none|incoming_links_asc|
       //   incoming_links_desc|last_edit_asc|last_edit_desc|
       //   create_timestamp_asc|create_timestamp_desc
-      // gsrsort: 'none',
+      gsrsort: config.gsrsort || 'none',
       gsrsearch: config.search || '' // Search titles or content (Required)
     }, isPriority).complete((resp) => {
       const {
         // Todo: Recurse through all results
-        /*
-        batchcomplete,
+        /* batchcomplete,
         continue: {
           gsroffset,
           continue: cont
-        },
-        */
+        }, */
         query: {
           pages
         }
