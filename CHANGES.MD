@@ -1,5 +1,18 @@
 # mw-replace-bot CHANGES
 
+## 0.4.0
+
+- Breaking change: Add node engines >= 8
+- Breaking change: Rename `hideText`->`logReplaceText`,
+  `debug`->`readonly`; add `logging`
+- Fix: `continue` code with `autoContinue` option
+- Enhancement: Add example
+- Enhancement: Export function which returns a `Promise` resolving to
+  an array of info re: replacements
+- Enhancement: Allow passing config path, config object, and defaulting to
+  config in current working directory (and throwing otherwise)
+- npm: Update devDep
+
 ## 0.3.1
 
 - Fix: Had not been requiring newly renamed config file properly
